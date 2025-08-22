@@ -1,5 +1,6 @@
 package com.healthcareApi.domain.dto.response;
 
+import com.healthcareApi.enums.GenderEnum;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,6 @@ public class UserResponseDTO {
     private String email;
     private LocalDate birthday;
     private AddressResponseDTO address;
+    private String phone;
+    private GenderEnum gender;
 }

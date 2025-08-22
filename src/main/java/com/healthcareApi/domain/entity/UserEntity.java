@@ -2,6 +2,7 @@ package com.healthcareApi.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.healthcareApi.enums.GenderEnum;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,9 +34,14 @@ public class UserEntity {
 
     private LocalDate birthday;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ADDRESS_ID")
     private AddressEntity address;
+
+    private String phone;
+
+    @Enumerated(EnumType.STRING)
+    private GenderEnum gender;
 
     @CreationTimestamp
     private Instant creationTimestamp;

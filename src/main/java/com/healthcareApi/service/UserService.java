@@ -5,6 +5,7 @@ import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.UserResponseDTO;
 import com.healthcareApi.domain.entity.AddressEntity;
 import com.healthcareApi.domain.entity.UserEntity;
+import com.healthcareApi.enums.GenderEnum;
 import com.healthcareApi.repository.AddressRepository;
 import com.healthcareApi.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,8 @@ public class UserService {
                 .lastname(dto.lastname())
                 .email(dto.email())
                 .birthday(dto.birthday())
+                .phone(dto.phone())
+                .gender(GenderEnum.values()[dto.gender()])
                 .build();
     }
 
@@ -45,6 +48,8 @@ public class UserService {
                 .lastname(entity.getLastname())
                 .email(entity.getEmail())
                 .birthday(entity.getBirthday())
+                .phone(entity.getPhone())
+                .gender(entity.getGender())
                 .address(addressService.convertEntityToDto(entity.getAddress()))
                 .build();
     }
