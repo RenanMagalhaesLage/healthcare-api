@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name= "TB_HEALTH_PROFESSIONAL")
+@Table(name= "TB_HEALTH_PROFESSIONALS")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
