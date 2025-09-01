@@ -1,5 +1,6 @@
 package com.healthcareApi.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.healthcareApi.enums.ProfessionalTypeEnum;
@@ -16,7 +17,7 @@ import java.util.Set;
 @Entity
 @Table(name= "TB_HEALTH_PROFESSIONALS")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -42,6 +43,7 @@ public class HealthProfessionalEntity {
     private String professionalId; // ex: CRM, COREN, etc.
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonBackReference
     @JoinTable(
             name = "HEALTH_PROFESSIONAL_MEDICAL_CENTER",
             joinColumns = @JoinColumn(name = "HEALTH_PROFESSIONAL_ID"),

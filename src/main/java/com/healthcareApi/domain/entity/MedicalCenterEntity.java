@@ -1,5 +1,6 @@
 package com.healthcareApi.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Entity
 @Table(name= "TB_MEDICAL_CENTERS")
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -35,6 +36,7 @@ public class MedicalCenterEntity {
     private String phone;
 
     @ManyToMany(mappedBy = "medicalCenters")
+    @JsonBackReference
     private Set<HealthProfessionalEntity> healthProfessionals = new HashSet<>();
 
     @CreationTimestamp

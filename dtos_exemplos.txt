@@ -1,0 +1,42 @@
+=========================Medical Center========================
+
+{
+  "name": "Sunrise Medical Center",
+  "address": {
+    "street": "123 Elm Street",
+    "number": "456",
+    "complement": "Suite 789",
+    "neighborhood": "Downtown",
+    "city": "Springfield",
+    "state": "IL",
+    "zipCode": "62704",
+    "country": "USA"
+  },
+  "phone": "+1-555-123-4567"
+}
+
+=========================Health Professional========================
+{
+  "user": {
+    "name": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
+    "birthday": "1990-05-15",
+    "address": {
+      "street": "Main Street",
+      "number": "123",
+      "complement": "Apt 45",
+      "neighborhood": "Downtown",
+      "city": "New York",
+      "state": "NY",
+      "zipCode": "10001",
+      "country": "USA"
+    },
+    "phone": "+1-555-123-4567",
+    "gender": 0
+  },
+  "type": 0,
+  "specialty": 2,
+  "professionalId": "CRM123456"
+}
+

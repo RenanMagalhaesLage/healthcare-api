@@ -42,14 +42,19 @@ public class MedicalCenterService {
 
     public List<MedicalCenterResponseDTO> addHealthProfessionals(HealthProfessionalMedicalCenterRequestDTO dto) {
         List<MedicalCenterResponseDTO> dtos = new ArrayList<MedicalCenterResponseDTO>();
-        for(Long id : dto.MedicalCenterIds()) {
+        for(Long id : dto.medicalCenterIds()) {
             MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
 
             Set<HealthProfessionalEntity> healthProfessionalEntitySet = new HashSet<>(healthProfessionalRepository.findAllById(dto.healthProfessionalIds()));
 
             medicalCenterEntity.getHealthProfessionals().addAll(healthProfessionalEntitySet);
-            dtos.add(convertEntityToDto(medicalCenterRepository.save(medicalCenterEntity)));
+            MedicalCenterEntity medicalCenterEntityAux =  medicalCenterRepository.saveAndFlush(medicalCenterEntity);
+            for (HealthProfessionalEntity professionalEntity : healthProfessionalEntitySet) {
+                professionalEntity.getMedicalCenters().add(medicalCenterEntityAux);
+                healthProfessionalRepository.save(professionalEntity);
+            }
+            dtos.add(convertEntityToDto(medicalCenterEntityAux));
         }
 
         return dtos;
