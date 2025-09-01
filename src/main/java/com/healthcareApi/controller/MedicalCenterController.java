@@ -1,5 +1,6 @@
 package com.healthcareApi.controller;
 
+import com.healthcareApi.domain.dto.request.HealthProfessionalMedicalCenterRequestDTO;
 import com.healthcareApi.domain.dto.request.MedicalCenterRequestDTO;
 import com.healthcareApi.domain.dto.response.MedicalCenterResponseDTO;
 import com.healthcareApi.service.MedicalCenterService;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/medical-centers")
 @Tag(name = "Medical Centers", description = "Endpoints for managing medical centers")
@@ -21,5 +24,10 @@ public class MedicalCenterController {
     @PostMapping()
     public ResponseEntity<MedicalCenterResponseDTO> create(@RequestBody MedicalCenterRequestDTO dto){
         return ResponseEntity.ok(medicalCenterService.create(dto));
+    }
+
+    @PostMapping("/health-professionals")
+    public ResponseEntity<List<MedicalCenterResponseDTO>> addHeathProfessionals(@RequestBody HealthProfessionalMedicalCenterRequestDTO dto){
+        return ResponseEntity.ok(medicalCenterService.addHealthProfessionals(dto));
     }
 }

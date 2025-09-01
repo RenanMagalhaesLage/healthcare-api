@@ -41,11 +41,11 @@ public class HealthProfessionalEntity {
     @Column(name = "PROFESSIONAL_ID")
     private String professionalId; // ex: CRM, COREN, etc.
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "HEALTH_PROFESSIONAL_MEDICAL_CENTER",
             joinColumns = @JoinColumn(name = "HEALTH_PROFESSIONAL_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID")
+            inverseJoinColumns = @JoinColumn(name = "MEDICAL_CENTER_ID")
     )
     private Set<MedicalCenterEntity> medicalCenters = new HashSet<>();
 

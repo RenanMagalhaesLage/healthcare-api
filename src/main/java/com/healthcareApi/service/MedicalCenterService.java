@@ -1,21 +1,32 @@
 package com.healthcareApi.service;
 
+import com.healthcareApi.domain.dto.request.HealthProfessionalMedicalCenterRequestDTO;
 import com.healthcareApi.domain.dto.request.MedicalCenterRequestDTO;
 import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.MedicalCenterResponseDTO;
+import com.healthcareApi.domain.entity.HealthProfessionalEntity;
 import com.healthcareApi.domain.entity.MedicalCenterEntity;
 import com.healthcareApi.repository.AddressRepository;
+import com.healthcareApi.repository.HealthProfessionalRepository;
 import com.healthcareApi.repository.MedicalCenterRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 public class MedicalCenterService {
     @Autowired
     private MedicalCenterRepository medicalCenterRepository;
+    @Autowired
+    private HealthProfessionalRepository healthProfessionalRepository;
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
@@ -27,6 +38,21 @@ public class MedicalCenterService {
 
         medicalCenterEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
         return convertEntityToDto(medicalCenterRepository.save(medicalCenterEntity));
+    }
+
+    public List<MedicalCenterResponseDTO> addHealthProfessionals(HealthProfessionalMedicalCenterRequestDTO dto) {
+        List<MedicalCenterResponseDTO> dtos = new ArrayList<MedicalCenterResponseDTO>();
+        for(Long id : dto.MedicalCenterIds()) {
+            MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(id)
+                    .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
+
+            Set<HealthProfessionalEntity> healthProfessionalEntitySet = new HashSet<>(healthProfessionalRepository.findAllById(dto.healthProfessionalIds()));
+
+            medicalCenterEntity.getHealthProfessionals().addAll(healthProfessionalEntitySet);
+            dtos.add(convertEntityToDto(medicalCenterRepository.save(medicalCenterEntity)));
+        }
+
+        return dtos;
     }
 
     public MedicalCenterEntity convertDtoToEntity(MedicalCenterRequestDTO dto){
@@ -42,6 +68,7 @@ public class MedicalCenterService {
                 .name(entity.getName())
                 .phone(entity.getPhone())
                 .address(addressService.convertEntityToDto(entity.getAddress()))
+                .healthProfessionalSet(entity.getHealthProfessionals())
                 .build();
     }
 
