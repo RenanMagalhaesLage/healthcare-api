@@ -10,6 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name= "TB_HEALTH_PROFESSIONAL")
@@ -38,6 +40,14 @@ public class HealthProfessionalEntity {
 
     @Column(name = "PROFESSIONAL_ID")
     private String professionalId; // ex: CRM, COREN, etc.
+
+    @ManyToMany
+    @JoinTable(
+            name = "HEALTH_PROFESSIONAL_MEDICAL_CENTER",
+            joinColumns = @JoinColumn(name = "HEALTH_PROFESSIONAL_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID")
+    )
+    private Set<MedicalCenter> medicalCenters = new HashSet<>();
 
     @CreationTimestamp
     private Instant creationTimestamp;
