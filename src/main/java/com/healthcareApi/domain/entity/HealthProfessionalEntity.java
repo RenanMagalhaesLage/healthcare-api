@@ -47,7 +47,7 @@ public class HealthProfessionalEntity {
             joinColumns = @JoinColumn(name = "HEALTH_PROFESSIONAL_ID"),
             inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID")
     )
-    private Set<MedicalCenter> medicalCenters = new HashSet<>();
+    private Set<MedicalCenterEntity> medicalCenters = new HashSet<>();
 
     @CreationTimestamp
     private Instant creationTimestamp;

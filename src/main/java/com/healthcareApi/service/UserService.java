@@ -3,11 +3,11 @@ package com.healthcareApi.service;
 import com.healthcareApi.domain.dto.request.UserRequestDTO;
 import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.UserResponseDTO;
-import com.healthcareApi.domain.entity.AddressEntity;
 import com.healthcareApi.domain.entity.UserEntity;
 import com.healthcareApi.enums.GenderEnum;
 import com.healthcareApi.repository.AddressRepository;
 import com.healthcareApi.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class UserService {
         UserEntity userEntity = convertDtoToEntity(dto);
         AddressResponseDTO addressResponseDTO = addressService.create(dto.address());
 
-        userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).get());
+        userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
         return convertEntityToDto(userRepository.save(userEntity));
     }
 

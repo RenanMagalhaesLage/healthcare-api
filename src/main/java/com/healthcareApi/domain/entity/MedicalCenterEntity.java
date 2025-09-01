@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MedicalCenter {
+public class MedicalCenterEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MEDICAL_CENTER_ID")
