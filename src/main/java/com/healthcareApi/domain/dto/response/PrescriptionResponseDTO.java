@@ -5,16 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.List;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class MedicationResponseDTO {
+public class PrescriptionResponseDTO {
     private Long id;
-    private String name;
-    private String dosage;
-    private String frequency;
+    private String observation;
+    private List<MedicationResponseDTO> medications;
 }
