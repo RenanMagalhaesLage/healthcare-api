@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
 
 @Entity
 @Table(name= "TB_MEDICATIONS")
@@ -29,4 +33,10 @@ public class MedicationEntity {
     @ManyToOne
     @JoinColumn(name = "PRESCRIPTION_ID")
     private PrescriptionEntity prescription;
+
+    @CreationTimestamp
+    private Instant creationTimestamp;
+
+    @UpdateTimestamp
+    private Instant updateTimestamp;
 }

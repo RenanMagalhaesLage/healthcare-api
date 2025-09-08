@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -38,4 +41,10 @@ public class AppointmentEntity {
 
     @Column(length = 1000)
     private String observation;
+
+    @CreationTimestamp
+    private Instant creationTimestamp;
+
+    @UpdateTimestamp
+    private Instant updateTimestamp;
 }

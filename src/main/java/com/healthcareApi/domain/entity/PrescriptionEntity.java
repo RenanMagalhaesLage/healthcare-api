@@ -4,7 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -27,5 +30,11 @@ public class PrescriptionEntity {
 
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MedicationEntity> medications;
+
+    @CreationTimestamp
+    private Instant creationTimestamp;
+
+    @UpdateTimestamp
+    private Instant updateTimestamp;
 
 }
