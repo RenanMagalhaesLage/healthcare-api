@@ -7,29 +7,37 @@ import com.healthcareApi.repository.AppointmentRepository;
 import com.healthcareApi.repository.HealthProfessionalRepository;
 import com.healthcareApi.repository.PatientRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AppointmentService {
-    @Autowired
-    private AppointmentRepository appointmentRepository;
-    @Autowired
-    private PatientRepository patientRepository;
-    @Autowired
-    private HealthProfessionalRepository healthProfessionalRepository;
-    @Autowired
-    private HealthProfessionalService healthProfessionalService;
-    @Autowired
-    private PrescriptionService prescriptionService;
-    @Autowired
-    private PatientService patientService;
+    private final AppointmentRepository appointmentRepository;
+    private final PatientRepository patientRepository;
+    private final HealthProfessionalRepository healthProfessionalRepository;
+    private final HealthProfessionalService healthProfessionalService;
+    private final PrescriptionService prescriptionService;
+    private final PatientService patientService;
 
     public AppointmentResponseDTO create(AppointmentRequestDTO dto){
         AppointmentEntity appointmentEntity = convertDtoToEntity(dto);
         return convertEntityToDto(appointmentRepository.save(appointmentEntity));
+    }
+
+    public List<AppointmentResponseDTO> getAll(){
+        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findAll();
+        List<AppointmentResponseDTO> appointmentResponseDTOList = new ArrayList<>();
+        for (AppointmentEntity appointmentEntity : appointmentEntityList) {
+            appointmentResponseDTOList.add(convertEntityToDto(appointmentEntity));
+        }
+        return appointmentResponseDTOList;
     }
 
     public AppointmentEntity convertDtoToEntity(AppointmentRequestDTO dto){
