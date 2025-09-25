@@ -2,6 +2,7 @@ package com.healthcareApi.service;
 
 import com.healthcareApi.domain.dto.request.AppointmentRequestDTO;
 import com.healthcareApi.domain.dto.response.AppointmentResponseDTO;
+import com.healthcareApi.domain.dto.response.HealthProfessionalResponseDTO;
 import com.healthcareApi.domain.entity.*;
 import com.healthcareApi.repository.AppointmentRepository;
 import com.healthcareApi.repository.HealthProfessionalRepository;
@@ -33,6 +34,26 @@ public class AppointmentService {
 
     public List<AppointmentResponseDTO> getAll(){
         List<AppointmentEntity> appointmentEntityList = appointmentRepository.findAll();
+        List<AppointmentResponseDTO> appointmentResponseDTOList = new ArrayList<>();
+        for (AppointmentEntity appointmentEntity : appointmentEntityList) {
+            appointmentResponseDTOList.add(convertEntityToDto(appointmentEntity));
+        }
+        return appointmentResponseDTOList;
+    }
+
+    public List<AppointmentResponseDTO> findByHealthProfessional(Long healthProfessionalId){
+        HealthProfessionalEntity healthProfessionalEntity = healthProfessionalRepository.findById(healthProfessionalId).orElseThrow(() -> new EntityNotFoundException("Health Professional not found"));
+        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findByHealthProfessional(healthProfessionalEntity);
+        List<AppointmentResponseDTO> appointmentResponseDTOList = new ArrayList<>();
+        for (AppointmentEntity appointmentEntity : appointmentEntityList) {
+            appointmentResponseDTOList.add(convertEntityToDto(appointmentEntity));
+        }
+        return appointmentResponseDTOList;
+    }
+
+    public List<AppointmentResponseDTO> findByPatient(Long patientId){
+        PatientEntity patientEntity = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findByPatient(patientEntity);
         List<AppointmentResponseDTO> appointmentResponseDTOList = new ArrayList<>();
         for (AppointmentEntity appointmentEntity : appointmentEntityList) {
             appointmentResponseDTOList.add(convertEntityToDto(appointmentEntity));
