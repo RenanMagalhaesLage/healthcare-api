@@ -33,9 +33,9 @@ public class UserService {
     }
 
     public List<UserResponseDTO> findAll(){
-        List<UserEntity> userEntities = userRepository.findAll();
+        List<UserEntity> userEntityList = userRepository.findAll();
         List<UserResponseDTO> userResponseDTOs = new ArrayList<>();
-        for (UserEntity userEntity : userEntities) {
+        for (UserEntity userEntity : userEntityList) {
             userResponseDTOs.add(convertEntityToDto(userEntity));
         }
         return userResponseDTOs;

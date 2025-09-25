@@ -8,24 +8,32 @@ import com.healthcareApi.domain.dto.response.MedicalCenterResponseDTO;
 import com.healthcareApi.service.HealthProfessionalService;
 import com.healthcareApi.service.MedicalCenterService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/health-professionals")
+@RequiredArgsConstructor
 @Tag(name = "Health Professionals", description = "Endpoints for managing health professionals")
 public class HealthProfessionalController {
-    @Autowired
-    private HealthProfessionalService healthProfessionalService;
+    private final HealthProfessionalService healthProfessionalService;
 
     @PostMapping()
     public ResponseEntity<HealthProfessionalResponseDTO> create(@RequestBody HealthProfessionalRequestDTO dto){
         return ResponseEntity.ok(healthProfessionalService.create(dto));
+    }
+
+    @GetMapping("all")
+    public ResponseEntity<List<HealthProfessionalResponseDTO>> getAll(){
+        return ResponseEntity.ok(healthProfessionalService.getAll());
+    }
+
+    @GetMapping("by-specialty")
+    public ResponseEntity<List<HealthProfessionalResponseDTO>> findBySpecialty(@RequestParam Integer specialty){
+        return ResponseEntity.ok(healthProfessionalService.findBySpecialty(specialty));
     }
 }

@@ -13,19 +13,21 @@ import com.healthcareApi.enums.SpecialtyEnum;
 import com.healthcareApi.repository.HealthProfessionalRepository;
 import com.healthcareApi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class HealthProfessionalService {
-    @Autowired
-    private HealthProfessionalRepository healthProfessionalRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
+    private final HealthProfessionalRepository healthProfessionalRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     public HealthProfessionalResponseDTO create (HealthProfessionalRequestDTO dto){
         HealthProfessionalEntity healthProfessionalEntity = convertDtoToEntity(dto);
@@ -33,6 +35,34 @@ public class HealthProfessionalService {
 
         healthProfessionalEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
         return convertEntityToDto(healthProfessionalRepository.save(healthProfessionalEntity));
+    }
+
+    public List<HealthProfessionalResponseDTO> getAll(){
+        List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findAll();
+        List<HealthProfessionalResponseDTO> healthProfessionalResponseDTOList = new ArrayList<>();
+        for (HealthProfessionalEntity entity : healthProfessionalEntityList) {
+            healthProfessionalResponseDTOList.add(convertEntityToDto(entity));
+        }
+        return healthProfessionalResponseDTOList;
+    }
+
+    public List<HealthProfessionalResponseDTO> findBySpecialty(Integer specialty){
+        SpecialtyEnum[] specialties = SpecialtyEnum.values();
+
+        if (specialty == null || specialty < 0 || specialty >= specialties.length) {
+            throw new IllegalArgumentException("Invalid specialty");
+        }
+
+        SpecialtyEnum selectedSpecialty = specialties[specialty];
+
+        List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findBySpecialty(selectedSpecialty);
+
+        List<HealthProfessionalResponseDTO> healthProfessionalResponseDTOList = new ArrayList<>();
+
+        for (HealthProfessionalEntity entity : healthProfessionalEntityList) {
+            healthProfessionalResponseDTOList.add(convertEntityToDto(entity));
+        }
+        return healthProfessionalResponseDTOList;
     }
 
     public HealthProfessionalEntity convertDtoToEntity(HealthProfessionalRequestDTO dto){
