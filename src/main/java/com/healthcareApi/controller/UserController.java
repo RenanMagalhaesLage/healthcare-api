@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserResponseDTO>> getAll(){
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<List<UserResponseDTO>> getAll(@RequestParam Long medicalCenterId){
+        return ResponseEntity.ok(userService.findAll(medicalCenterId));
     }
 }

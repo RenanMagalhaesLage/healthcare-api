@@ -43,6 +43,10 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "MEDICAL_CENTER_ID")
+    private MedicalCenterEntity medicalCenter;
+
     @CreationTimestamp
     private Instant creationTimestamp;
 

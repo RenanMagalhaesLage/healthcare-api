@@ -28,12 +28,12 @@ public class HealthProfessionalController {
     }
 
     @GetMapping("all")
-    public ResponseEntity<List<HealthProfessionalResponseDTO>> getAll(){
-        return ResponseEntity.ok(healthProfessionalService.getAll());
+    public ResponseEntity<List<HealthProfessionalResponseDTO>> getAll(@RequestParam Long medicalCenterId){
+        return ResponseEntity.ok(healthProfessionalService.getAll(medicalCenterId));
     }
 
     @GetMapping("by-specialty")
-    public ResponseEntity<List<HealthProfessionalResponseDTO>> findBySpecialty(@RequestParam Integer specialty){
-        return ResponseEntity.ok(healthProfessionalService.findBySpecialty(specialty));
+    public ResponseEntity<List<HealthProfessionalResponseDTO>> findBySpecialty(@RequestParam Integer specialty, @RequestParam Long medicalCenterId){
+        return ResponseEntity.ok(healthProfessionalService.findBySpecialty(specialty, medicalCenterId));
     }
 }

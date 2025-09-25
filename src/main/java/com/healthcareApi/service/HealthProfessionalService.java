@@ -6,11 +6,13 @@ import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.HealthProfessionalResponseDTO;
 import com.healthcareApi.domain.dto.response.UserResponseDTO;
 import com.healthcareApi.domain.entity.HealthProfessionalEntity;
+import com.healthcareApi.domain.entity.MedicalCenterEntity;
 import com.healthcareApi.domain.entity.UserEntity;
 import com.healthcareApi.enums.GenderEnum;
 import com.healthcareApi.enums.ProfessionalTypeEnum;
 import com.healthcareApi.enums.SpecialtyEnum;
 import com.healthcareApi.repository.HealthProfessionalRepository;
+import com.healthcareApi.repository.MedicalCenterRepository;
 import com.healthcareApi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -28,6 +31,7 @@ public class HealthProfessionalService {
     private final HealthProfessionalRepository healthProfessionalRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final MedicalCenterRepository medicalCenterRepository;
 
     public HealthProfessionalResponseDTO create (HealthProfessionalRequestDTO dto){
         HealthProfessionalEntity healthProfessionalEntity = convertDtoToEntity(dto);
@@ -37,8 +41,8 @@ public class HealthProfessionalService {
         return convertEntityToDto(healthProfessionalRepository.save(healthProfessionalEntity));
     }
 
-    public List<HealthProfessionalResponseDTO> getAll(){
-        List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findAll();
+    public List<HealthProfessionalResponseDTO> getAll(Long medicalCenterId){
+        List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findAll().stream().filter(n -> Objects.equals(n.getUser().getMedicalCenter().getId(), medicalCenterId)).toList();
         List<HealthProfessionalResponseDTO> healthProfessionalResponseDTOList = new ArrayList<>();
         for (HealthProfessionalEntity entity : healthProfessionalEntityList) {
             healthProfessionalResponseDTOList.add(convertEntityToDto(entity));
@@ -46,7 +50,7 @@ public class HealthProfessionalService {
         return healthProfessionalResponseDTOList;
     }
 
-    public List<HealthProfessionalResponseDTO> findBySpecialty(Integer specialty){
+    public List<HealthProfessionalResponseDTO> findBySpecialty(Integer specialty, Long medicalCenterId){
         SpecialtyEnum[] specialties = SpecialtyEnum.values();
 
         if (specialty == null || specialty < 0 || specialty >= specialties.length) {
@@ -56,7 +60,7 @@ public class HealthProfessionalService {
         SpecialtyEnum selectedSpecialty = specialties[specialty];
 
         List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findBySpecialty(selectedSpecialty);
-
+        healthProfessionalEntityList = healthProfessionalEntityList.stream().filter(n -> Objects.equals(n.getUser().getMedicalCenter().getId(), medicalCenterId)).toList();
         List<HealthProfessionalResponseDTO> healthProfessionalResponseDTOList = new ArrayList<>();
 
         for (HealthProfessionalEntity entity : healthProfessionalEntityList) {

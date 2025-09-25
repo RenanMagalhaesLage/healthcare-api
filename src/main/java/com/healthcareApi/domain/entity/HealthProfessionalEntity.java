@@ -42,15 +42,6 @@ public class HealthProfessionalEntity {
     @Column(name = "PROFESSIONAL_ID")
     private String professionalId; // ex: CRM, COREN, etc.
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonBackReference
-    @JoinTable(
-            name = "HEALTH_PROFESSIONAL_MEDICAL_CENTER",
-            joinColumns = @JoinColumn(name = "HEALTH_PROFESSIONAL_ID"),
-            inverseJoinColumns = @JoinColumn(name = "MEDICAL_CENTER_ID")
-    )
-    private Set<MedicalCenterEntity> medicalCenters = new HashSet<>();
-
     @CreationTimestamp
     private Instant creationTimestamp;
 

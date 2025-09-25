@@ -13,19 +13,18 @@ import com.healthcareApi.repository.HealthProfessionalRepository;
 import com.healthcareApi.repository.PatientRepository;
 import com.healthcareApi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class PatientService {
-    @Autowired
-    private PatientRepository patientRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
+    private final PatientRepository patientRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     public PatientResponseDTO create (PatientRequestDTO dto){
         PatientEntity patientEntity = convertDtoToEntity(dto);

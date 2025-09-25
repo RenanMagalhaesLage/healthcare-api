@@ -27,8 +27,8 @@ public class AppointmentController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<AppointmentResponseDTO>> getAll(){
-        return ResponseEntity.ok(appointmentService.getAll());
+    public ResponseEntity<List<AppointmentResponseDTO>> getAll(@RequestParam Long medicalCenterId){
+        return ResponseEntity.ok(appointmentService.getAll(medicalCenterId));
     }
 
     @GetMapping("by-health-professional")

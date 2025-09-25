@@ -35,10 +35,6 @@ public class MedicalCenterEntity {
 
     private String phone;
 
-    @ManyToMany(mappedBy = "medicalCenters")
-    @JsonBackReference
-    private Set<HealthProfessionalEntity> healthProfessionals = new HashSet<>();
-
     @CreationTimestamp
     private Instant creationTimestamp;
 

@@ -3,9 +3,11 @@ package com.healthcareApi.service;
 import com.healthcareApi.domain.dto.request.UserRequestDTO;
 import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.UserResponseDTO;
+import com.healthcareApi.domain.entity.MedicalCenterEntity;
 import com.healthcareApi.domain.entity.UserEntity;
 import com.healthcareApi.enums.GenderEnum;
 import com.healthcareApi.repository.AddressRepository;
+import com.healthcareApi.repository.MedicalCenterRepository;
 import com.healthcareApi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,18 +24,21 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final MedicalCenterRepository medicalCenterRepository;
     private final AddressService addressService;
 
     public UserResponseDTO create (UserRequestDTO dto){
         UserEntity userEntity = convertDtoToEntity(dto);
         AddressResponseDTO addressResponseDTO = addressService.create(dto.address());
 
+        userEntity.setMedicalCenter(medicalCenterRepository.findById(dto.medicalCenterId()).orElseThrow(() -> new EntityNotFoundException("Medical Center not found")));
         userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
         return convertEntityToDto(userRepository.save(userEntity));
     }
 
-    public List<UserResponseDTO> findAll(){
-        List<UserEntity> userEntityList = userRepository.findAll();
+    public List<UserResponseDTO> findAll(Long medicalCenterId){
+        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId).orElseThrow(() -> new EntityNotFoundException("Medical Center not found"));
+        List<UserEntity> userEntityList = userRepository.findByMedicalCenter(medicalCenterEntity);
         List<UserResponseDTO> userResponseDTOs = new ArrayList<>();
         for (UserEntity userEntity : userEntityList) {
             userResponseDTOs.add(convertEntityToDto(userEntity));

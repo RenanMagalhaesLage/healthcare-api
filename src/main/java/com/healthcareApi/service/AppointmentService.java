@@ -6,6 +6,7 @@ import com.healthcareApi.domain.dto.response.HealthProfessionalResponseDTO;
 import com.healthcareApi.domain.entity.*;
 import com.healthcareApi.repository.AppointmentRepository;
 import com.healthcareApi.repository.HealthProfessionalRepository;
+import com.healthcareApi.repository.MedicalCenterRepository;
 import com.healthcareApi.repository.PatientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.List;
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final PatientRepository patientRepository;
+    private final MedicalCenterRepository medicalCenterRepository;
     private final HealthProfessionalRepository healthProfessionalRepository;
     private final HealthProfessionalService healthProfessionalService;
     private final PrescriptionService prescriptionService;
@@ -29,11 +31,14 @@ public class AppointmentService {
 
     public AppointmentResponseDTO create(AppointmentRequestDTO dto){
         AppointmentEntity appointmentEntity = convertDtoToEntity(dto);
+        appointmentEntity.setMedicalCenter(medicalCenterRepository.findById(dto.medicalCenterId()).orElseThrow(() -> new EntityNotFoundException("Medical Center not found")));
+
         return convertEntityToDto(appointmentRepository.save(appointmentEntity));
     }
 
-    public List<AppointmentResponseDTO> getAll(){
-        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findAll();
+    public List<AppointmentResponseDTO> getAll(Long medicalCenterId){
+        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId).orElseThrow(() -> new EntityNotFoundException("Medical Center not found"));
+        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findByMedicalCenter(medicalCenterEntity);
         List<AppointmentResponseDTO> appointmentResponseDTOList = new ArrayList<>();
         for (AppointmentEntity appointmentEntity : appointmentEntityList) {
             appointmentResponseDTOList.add(convertEntityToDto(appointmentEntity));
