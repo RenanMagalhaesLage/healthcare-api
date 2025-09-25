@@ -38,26 +38,6 @@ public class MedicalCenterService {
         return convertEntityToDto(medicalCenterRepository.save(medicalCenterEntity));
     }
 
-    public List<MedicalCenterResponseDTO> addHealthProfessionals(HealthProfessionalMedicalCenterRequestDTO dto) {
-        List<MedicalCenterResponseDTO> medicalCenterResponseDTOList = new ArrayList<MedicalCenterResponseDTO>();
-        for(Long id : dto.medicalCenterIds()) {
-            MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
-
-            Set<HealthProfessionalEntity> healthProfessionalEntitySet = new HashSet<>(healthProfessionalRepository.findAllById(dto.healthProfessionalIds()));
-
-            medicalCenterEntity.getHealthProfessionals().addAll(healthProfessionalEntitySet);
-            MedicalCenterEntity medicalCenterEntityAux =  medicalCenterRepository.saveAndFlush(medicalCenterEntity);
-            for (HealthProfessionalEntity professionalEntity : healthProfessionalEntitySet) {
-                professionalEntity.getMedicalCenters().add(medicalCenterEntityAux);
-                healthProfessionalRepository.save(professionalEntity);
-            }
-            medicalCenterResponseDTOList.add(convertEntityToDto(medicalCenterEntityAux));
-        }
-
-        return medicalCenterResponseDTOList;
-    }
-
     public MedicalCenterResponseDTO getById(Long medicalCenterId) {
         MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId) .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
         return convertEntityToDto(medicalCenterEntity);
@@ -76,7 +56,6 @@ public class MedicalCenterService {
                 .name(entity.getName())
                 .phone(entity.getPhone())
                 .address(addressService.convertEntityToDto(entity.getAddress()))
-                .healthProfessionalSet(entity.getHealthProfessionals())
                 .build();
     }
 

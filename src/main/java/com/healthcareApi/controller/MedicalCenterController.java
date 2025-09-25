@@ -24,11 +24,6 @@ public class MedicalCenterController {
         return ResponseEntity.ok(medicalCenterService.create(dto));
     }
 
-    @PostMapping("/health-professionals")
-    public ResponseEntity<List<MedicalCenterResponseDTO>> addHeathProfessionals(@RequestBody HealthProfessionalMedicalCenterRequestDTO dto){
-        return ResponseEntity.ok(medicalCenterService.addHealthProfessionals(dto));
-    }
-
     @GetMapping
     public ResponseEntity<MedicalCenterResponseDTO> getById(@RequestParam Long medicalCenterId){
         return ResponseEntity.ok(medicalCenterService.getById(medicalCenterId));
