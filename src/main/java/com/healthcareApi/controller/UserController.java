@@ -4,19 +4,28 @@ import com.healthcareApi.domain.dto.request.UserRequestDTO;
 import com.healthcareApi.domain.dto.response.UserResponseDTO;
 import com.healthcareApi.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 @Tag(name = "Users", description = "Endpoints for managing users")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @PostMapping()
     public ResponseEntity<UserResponseDTO> create(@RequestBody UserRequestDTO dto){
         return ResponseEntity.ok(userService.create(dto));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<UserResponseDTO>> getAll(){
+        return ResponseEntity.ok(userService.findAll());
     }
 }

@@ -8,19 +8,21 @@ import com.healthcareApi.enums.GenderEnum;
 import com.healthcareApi.repository.AddressRepository;
 import com.healthcareApi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AddressRepository addressRepository;
-    @Autowired
-    private AddressService addressService;
+    private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
+    private final AddressService addressService;
 
     public UserResponseDTO create (UserRequestDTO dto){
         UserEntity userEntity = convertDtoToEntity(dto);
@@ -28,6 +30,15 @@ public class UserService {
 
         userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
         return convertEntityToDto(userRepository.save(userEntity));
+    }
+
+    public List<UserResponseDTO> findAll(){
+        List<UserEntity> userEntities = userRepository.findAll();
+        List<UserResponseDTO> userResponseDTOs = new ArrayList<>();
+        for (UserEntity userEntity : userEntities) {
+            userResponseDTOs.add(convertEntityToDto(userEntity));
+        }
+        return userResponseDTOs;
     }
 
     public UserEntity convertDtoToEntity(UserRequestDTO dto){
