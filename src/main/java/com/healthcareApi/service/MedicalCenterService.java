@@ -10,6 +10,7 @@ import com.healthcareApi.repository.AddressRepository;
 import com.healthcareApi.repository.HealthProfessionalRepository;
 import com.healthcareApi.repository.MedicalCenterRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,15 +23,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class MedicalCenterService {
-    @Autowired
-    private MedicalCenterRepository medicalCenterRepository;
-    @Autowired
-    private HealthProfessionalRepository healthProfessionalRepository;
-    @Autowired
-    private AddressRepository addressRepository;
-    @Autowired
-    private AddressService addressService;
+    private final MedicalCenterRepository medicalCenterRepository;
+    private final HealthProfessionalRepository healthProfessionalRepository;
+    private final AddressRepository addressRepository;
+    private final AddressService addressService;
 
     public MedicalCenterResponseDTO create(MedicalCenterRequestDTO dto) {
         MedicalCenterEntity medicalCenterEntity = convertDtoToEntity(dto);
@@ -41,7 +39,7 @@ public class MedicalCenterService {
     }
 
     public List<MedicalCenterResponseDTO> addHealthProfessionals(HealthProfessionalMedicalCenterRequestDTO dto) {
-        List<MedicalCenterResponseDTO> dtos = new ArrayList<MedicalCenterResponseDTO>();
+        List<MedicalCenterResponseDTO> medicalCenterResponseDTOList = new ArrayList<MedicalCenterResponseDTO>();
         for(Long id : dto.medicalCenterIds()) {
             MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(id)
                     .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
@@ -54,10 +52,15 @@ public class MedicalCenterService {
                 professionalEntity.getMedicalCenters().add(medicalCenterEntityAux);
                 healthProfessionalRepository.save(professionalEntity);
             }
-            dtos.add(convertEntityToDto(medicalCenterEntityAux));
+            medicalCenterResponseDTOList.add(convertEntityToDto(medicalCenterEntityAux));
         }
 
-        return dtos;
+        return medicalCenterResponseDTOList;
+    }
+
+    public MedicalCenterResponseDTO getById(Long medicalCenterId) {
+        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId) .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
+        return convertEntityToDto(medicalCenterEntity);
     }
 
     public MedicalCenterEntity convertDtoToEntity(MedicalCenterRequestDTO dto){
