@@ -21,6 +21,5 @@ public class AppointmentResponseDTO {
     private LocalDateTime date;
     private HealthProfessionalResponseDTO healthProfessional;
     private PatientResponseDTO patient;
-    private PrescriptionResponseDTO prescription;
     private String observation;
 }

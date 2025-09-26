@@ -2,7 +2,6 @@ package com.healthcareApi.service;
 
 import com.healthcareApi.domain.dto.request.AppointmentRequestDTO;
 import com.healthcareApi.domain.dto.response.AppointmentResponseDTO;
-import com.healthcareApi.domain.dto.response.HealthProfessionalResponseDTO;
 import com.healthcareApi.domain.entity.*;
 import com.healthcareApi.repository.AppointmentRepository;
 import com.healthcareApi.repository.HealthProfessionalRepository;
@@ -11,7 +10,6 @@ import com.healthcareApi.repository.PatientRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -84,7 +82,6 @@ public class AppointmentService {
                 entity.getDate(),
                 healthProfessionalService.convertEntityToDto(entity.getHealthProfessional()),
                 patientService.convertEntityToDto(entity.getPatient()),
-                prescriptionService.convertEntityToDto(entity.getPrescription()),
                 entity.getObservation()
 
         );

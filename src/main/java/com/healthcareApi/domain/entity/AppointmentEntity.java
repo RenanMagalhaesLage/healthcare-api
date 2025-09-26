@@ -35,10 +35,6 @@ public class AppointmentEntity {
     @JoinColumn(name = "PATIENT_ID")
     private PatientEntity patient;
 
-    @OneToOne
-    @JoinColumn(name = "PRESCRIPTION_ID", unique = true)
-    private PrescriptionEntity prescription;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "MEDICAL_CENTER_ID")
     private MedicalCenterEntity medicalCenter;

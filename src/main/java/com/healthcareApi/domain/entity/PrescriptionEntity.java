@@ -31,6 +31,10 @@ public class PrescriptionEntity {
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MedicationEntity> medications;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "APPOINTMENT_ID")
+    private AppointmentEntity appointment;
+
     @CreationTimestamp
     private Instant creationTimestamp;
 
