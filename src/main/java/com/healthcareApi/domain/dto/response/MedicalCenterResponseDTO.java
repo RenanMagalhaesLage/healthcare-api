@@ -18,5 +18,4 @@ public class MedicalCenterResponseDTO {
     private String name;
     private AddressResponseDTO address;
     private String phone;
-    private Set<HealthProfessionalEntity> healthProfessionalSet;
 }

@@ -1,14 +1,9 @@
 package com.healthcareApi.service;
 
 import com.healthcareApi.domain.dto.request.HealthProfessionalRequestDTO;
-import com.healthcareApi.domain.dto.request.UserRequestDTO;
-import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.HealthProfessionalResponseDTO;
 import com.healthcareApi.domain.dto.response.UserResponseDTO;
 import com.healthcareApi.domain.entity.HealthProfessionalEntity;
-import com.healthcareApi.domain.entity.MedicalCenterEntity;
-import com.healthcareApi.domain.entity.UserEntity;
-import com.healthcareApi.enums.GenderEnum;
 import com.healthcareApi.enums.ProfessionalTypeEnum;
 import com.healthcareApi.enums.SpecialtyEnum;
 import com.healthcareApi.repository.HealthProfessionalRepository;
@@ -17,7 +12,6 @@ import com.healthcareApi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -67,6 +61,13 @@ public class HealthProfessionalService {
             healthProfessionalResponseDTOList.add(convertEntityToDto(entity));
         }
         return healthProfessionalResponseDTOList;
+    }
+
+    public String delete(Long healthProfessionalId){
+        HealthProfessionalEntity healthProfessionalEntity = healthProfessionalRepository.findById(healthProfessionalId).orElseThrow(() -> new EntityNotFoundException("Health Professional not found"));
+        healthProfessionalRepository.delete(healthProfessionalEntity);
+
+        return "Health Professional deleted successfully.";
     }
 
     public HealthProfessionalEntity convertDtoToEntity(HealthProfessionalRequestDTO dto){

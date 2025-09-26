@@ -33,7 +33,8 @@
       "country": "USA"
     },
     "phone": "+1-555-123-4567",
-    "gender": 0
+    "gender": 0,
+    "medicalCenterId": 1
   },
   "type": 0,
   "specialty": 2,
