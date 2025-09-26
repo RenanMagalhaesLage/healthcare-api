@@ -4,6 +4,7 @@ import com.healthcareApi.domain.dto.request.AddressRequestDTO;
 import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.entity.AddressEntity;
 import com.healthcareApi.repository.AddressRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,15 @@ public class AddressService {
     public AddressResponseDTO create(AddressRequestDTO dto){
         AddressEntity addressEntity = convertDtoToEntity(dto);
         return convertEntityToDto(addressRepository.save(addressEntity));
+    }
+
+    public AddressResponseDTO update(AddressRequestDTO dto){
+        AddressEntity addressEntity = addressRepository.findById(dto.addressId()).orElseThrow(() -> new EntityNotFoundException("Address not found"));
+        AddressEntity newAddressEntity = convertDtoToEntity(dto);
+        newAddressEntity.setId(dto.addressId());
+        newAddressEntity.setCreationTimestamp(addressEntity.getCreationTimestamp());
+
+        return convertEntityToDto(addressRepository.save(newAddressEntity));
     }
 
     public AddressEntity convertDtoToEntity(AddressRequestDTO dto){
@@ -34,7 +44,7 @@ public class AddressService {
     }
 
     public AddressResponseDTO convertEntityToDto(AddressEntity entity){
-        return new AddressResponseDTO().builder()
+        return AddressResponseDTO.builder()
                 .id(entity.getId())
                 .city(entity.getCity())
                 .complement(entity.getComplement())

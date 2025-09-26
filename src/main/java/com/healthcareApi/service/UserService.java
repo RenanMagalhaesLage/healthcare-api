@@ -1,8 +1,10 @@
 package com.healthcareApi.service;
 
+import com.healthcareApi.domain.dto.request.HealthProfessionalRequestDTO;
 import com.healthcareApi.domain.dto.request.UserRequestDTO;
 import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.UserResponseDTO;
+import com.healthcareApi.domain.entity.HealthProfessionalEntity;
 import com.healthcareApi.domain.entity.MedicalCenterEntity;
 import com.healthcareApi.domain.entity.UserEntity;
 import com.healthcareApi.enums.GenderEnum;
@@ -31,8 +33,21 @@ public class UserService {
         UserEntity userEntity = convertDtoToEntity(dto);
         AddressResponseDTO addressResponseDTO = addressService.create(dto.address());
 
+
         userEntity.setMedicalCenter(medicalCenterRepository.findById(dto.medicalCenterId()).orElseThrow(() -> new EntityNotFoundException("Medical Center not found")));
         userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
+        return convertEntityToDto(userRepository.save(userEntity));
+    }
+
+    public UserResponseDTO update(UserRequestDTO dto){
+        UserEntity userEntity = userRepository.findById(dto.userId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        UserEntity newUserEntity = convertDtoToEntity(dto);
+        AddressResponseDTO addressResponseDTO = addressService.update(dto.address());
+        newUserEntity.setId(dto.userId());
+        newUserEntity.setCreationTimestamp(userEntity.getCreationTimestamp());
+
+        userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
+        userEntity.setMedicalCenter(userEntity.getMedicalCenter());
         return convertEntityToDto(userRepository.save(userEntity));
     }
 

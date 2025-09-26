@@ -35,4 +35,9 @@ public class HealthProfessionalController {
     public ResponseEntity<String> delete(@RequestParam Long healthProfessionalId){
         return ResponseEntity.ok(healthProfessionalService.delete(healthProfessionalId));
     }
+
+    @PutMapping()
+    public ResponseEntity<HealthProfessionalResponseDTO> update(@RequestBody HealthProfessionalRequestDTO dto){
+        return ResponseEntity.ok(healthProfessionalService.update(dto));
+    }
 }

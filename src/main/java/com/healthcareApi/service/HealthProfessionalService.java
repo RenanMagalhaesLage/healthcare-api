@@ -70,6 +70,17 @@ public class HealthProfessionalService {
         return "Health Professional deleted successfully.";
     }
 
+    public HealthProfessionalResponseDTO update(HealthProfessionalRequestDTO dto){
+        HealthProfessionalEntity healthProfessionalEntity = healthProfessionalRepository.findById(dto.healthProfessionalId()).orElseThrow(() -> new EntityNotFoundException("Health Professional not found"));
+        HealthProfessionalEntity newHealthProfessionalEntity = convertDtoToEntity(dto);
+        UserResponseDTO userResponseDTO = userService.update(dto.user());
+        newHealthProfessionalEntity.setId(dto.healthProfessionalId());
+        newHealthProfessionalEntity.setCreationTimestamp(healthProfessionalEntity.getCreationTimestamp());
+
+        healthProfessionalEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
+        return convertEntityToDto(healthProfessionalRepository.save(healthProfessionalEntity));
+    }
+
     public HealthProfessionalEntity convertDtoToEntity(HealthProfessionalRequestDTO dto){
         return HealthProfessionalEntity.builder()
                 .type(ProfessionalTypeEnum.values()[dto.type()])
