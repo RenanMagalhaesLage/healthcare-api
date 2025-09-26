@@ -47,6 +47,13 @@ public class PatientService {
         return patientResponseDTOList;
     }
 
+    public String delete(Long patientId){
+        PatientEntity patientEntity = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        patientRepository.delete(patientEntity);
+
+        return "Patient deleted successfully.";
+    }
+
     public PatientEntity convertDtoToEntity(PatientRequestDTO dto){
         return PatientEntity.builder()
                 .bloodType(dto.bloodType())

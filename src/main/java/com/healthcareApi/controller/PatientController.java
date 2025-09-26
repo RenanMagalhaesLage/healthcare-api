@@ -26,11 +26,10 @@ public class PatientController {
         return ResponseEntity.ok(patientService.getAll(medicalCenterId));
     }
 
-//
-//    @DeleteMapping()
-//    public ResponseEntity<String> delete(@RequestParam Long healthProfessionalId){
-//        return ResponseEntity.ok(patientService.delete(healthProfessionalId));
-//    }
+    @DeleteMapping()
+    public ResponseEntity<String> delete(@RequestParam Long patientId){
+        return ResponseEntity.ok(patientService.delete(patientId));
+    }
 //
 //    @PutMapping()
 //    public ResponseEntity<HealthProfessionalResponseDTO> update(@RequestBody HealthProfessionalRequestDTO dto){
