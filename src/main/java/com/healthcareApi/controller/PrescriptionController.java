@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/prescriptions")
@@ -19,6 +21,11 @@ public class PrescriptionController {
     @PostMapping()
     public ResponseEntity<PrescriptionResponseDTO> create(@RequestBody PrescriptionRequestDTO dto){
         return ResponseEntity.ok(prescriptionService.create(dto));
+    }
+
+    @GetMapping("by-patient")
+    public ResponseEntity<List<PrescriptionResponseDTO>> findByPatient(@RequestParam Long patientId){
+        return ResponseEntity.ok(prescriptionService.findByPatient(patientId));
     }
 
 }

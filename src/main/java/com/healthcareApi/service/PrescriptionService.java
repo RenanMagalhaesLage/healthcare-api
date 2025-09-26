@@ -6,8 +6,10 @@ import com.healthcareApi.domain.dto.response.MedicationResponseDTO;
 import com.healthcareApi.domain.dto.response.PrescriptionResponseDTO;
 import com.healthcareApi.domain.entity.AppointmentEntity;
 import com.healthcareApi.domain.entity.MedicationEntity;
+import com.healthcareApi.domain.entity.PatientEntity;
 import com.healthcareApi.domain.entity.PrescriptionEntity;
 import com.healthcareApi.repository.AppointmentRepository;
+import com.healthcareApi.repository.PatientRepository;
 import com.healthcareApi.repository.PrescriptionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
 public class PrescriptionService {
     private final PrescriptionRepository prescriptionRepository;
     private final AppointmentRepository appointmentRepository;
+    private final PatientRepository patientRepository;
 
     private final MedicationService medicationService;
 
@@ -40,6 +44,20 @@ public class PrescriptionService {
                 .collect(Collectors.toList());
         prescriptionEntity.setMedications(medicationEntityList);
         return convertEntityToDto(prescriptionRepository.save(prescriptionEntity));
+    }
+
+    public List<PrescriptionResponseDTO> findByPatient(Long patientId){
+        PatientEntity patientEntity = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        List<AppointmentEntity> appointmentEntityList = appointmentRepository.findByPatient(patientEntity);
+        List<PrescriptionEntity> prescriptionEntityList = new ArrayList<>();
+        for (AppointmentEntity appointmentEntity : appointmentEntityList){
+            prescriptionEntityList.addAll(prescriptionRepository.findByAppointment(appointmentEntity));
+        }
+        List<PrescriptionResponseDTO> prescriptionResponseDTOList = new ArrayList<>();
+        for(PrescriptionEntity prescriptionEntity : prescriptionEntityList){
+            prescriptionResponseDTOList.add(convertEntityToDto(prescriptionEntity));
+        }
+        return prescriptionResponseDTOList;
     }
 
     public PrescriptionEntity convertDtoToEntity(PrescriptionRequestDTO dto){
