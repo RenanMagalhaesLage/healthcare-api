@@ -18,6 +18,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -32,6 +36,15 @@ public class PatientService {
 
         patientEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
         return convertEntityToDto(patientRepository.save(patientEntity));
+    }
+
+    public List<PatientResponseDTO> getAll(Long medicalCenterId){
+        List<PatientEntity> patientEntityList = patientRepository.findAll().stream().filter(n -> Objects.equals(n.getUser().getMedicalCenter().getId(), medicalCenterId)).toList();
+        List<PatientResponseDTO> patientResponseDTOList = new ArrayList<>();
+        for (PatientEntity entity : patientEntityList) {
+            patientResponseDTOList.add(convertEntityToDto(entity));
+        }
+        return patientResponseDTOList;
     }
 
     public PatientEntity convertDtoToEntity(PatientRequestDTO dto){

@@ -21,15 +21,11 @@ public class PatientController {
     public ResponseEntity<PatientResponseDTO> create(@RequestBody PatientRequestDTO dto){
         return ResponseEntity.ok(patientService.create(dto));
     }
-//    @GetMapping("all")
-//    public ResponseEntity<List<HealthProfessionalResponseDTO>> getAll(@RequestParam Long medicalCenterId){
-//        return ResponseEntity.ok(patientService.getAll(medicalCenterId));
-//    }
-//
-//    @GetMapping("by-specialty")
-//    public ResponseEntity<List<HealthProfessionalResponseDTO>> findBySpecialty(@RequestParam Integer specialty, @RequestParam Long medicalCenterId){
-//        return ResponseEntity.ok(patientService.findBySpecialty(specialty, medicalCenterId));
-//    }
+    @GetMapping("all")
+    public ResponseEntity<List<PatientResponseDTO>> getAll(@RequestParam Long medicalCenterId){
+        return ResponseEntity.ok(patientService.getAll(medicalCenterId));
+    }
+
 //
 //    @DeleteMapping()
 //    public ResponseEntity<String> delete(@RequestParam Long healthProfessionalId){
