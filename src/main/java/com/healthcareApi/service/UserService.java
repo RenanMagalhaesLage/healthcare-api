@@ -46,9 +46,9 @@ public class UserService {
         newUserEntity.setId(dto.userId());
         newUserEntity.setCreationTimestamp(userEntity.getCreationTimestamp());
 
-        userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
-        userEntity.setMedicalCenter(userEntity.getMedicalCenter());
-        return convertEntityToDto(userRepository.save(userEntity));
+        newUserEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
+        newUserEntity.setMedicalCenter(userEntity.getMedicalCenter());
+        return convertEntityToDto(userRepository.save(newUserEntity));
     }
 
     public List<UserResponseDTO> findAll(Long medicalCenterId){

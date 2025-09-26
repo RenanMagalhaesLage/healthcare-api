@@ -54,6 +54,17 @@ public class PatientService {
         return "Patient deleted successfully.";
     }
 
+    public PatientResponseDTO update(PatientRequestDTO dto){
+        PatientEntity patientEntity = patientRepository.findById(dto.patientId()).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        PatientEntity newPatientEntity = convertDtoToEntity(dto);
+        UserResponseDTO userResponseDTO = userService.update(dto.user());
+        newPatientEntity.setId(dto.patientId());
+        newPatientEntity.setCreationTimestamp(patientEntity.getCreationTimestamp());
+
+        newPatientEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
+        return convertEntityToDto(patientRepository.save(newPatientEntity));
+    }
+
     public PatientEntity convertDtoToEntity(PatientRequestDTO dto){
         return PatientEntity.builder()
                 .bloodType(dto.bloodType())

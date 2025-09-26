@@ -77,8 +77,8 @@ public class HealthProfessionalService {
         newHealthProfessionalEntity.setId(dto.healthProfessionalId());
         newHealthProfessionalEntity.setCreationTimestamp(healthProfessionalEntity.getCreationTimestamp());
 
-        healthProfessionalEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
-        return convertEntityToDto(healthProfessionalRepository.save(healthProfessionalEntity));
+        newHealthProfessionalEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
+        return convertEntityToDto(healthProfessionalRepository.save(newHealthProfessionalEntity));
     }
 
     public HealthProfessionalEntity convertDtoToEntity(HealthProfessionalRequestDTO dto){

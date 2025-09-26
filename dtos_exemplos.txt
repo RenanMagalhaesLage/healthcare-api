@@ -41,3 +41,28 @@
   "professionalId": "CRM123456"
 }
 
+
+=========================Patient========================
+{
+  "user": {
+    "name": "Emily",
+    "lastname": "Clark",
+    "email": "emily.clark@example.org",
+    "birthday": "1987-11-23",
+    "address": {
+      "street": "456 Oak Avenue",
+      "number": "789",
+      "complement": "Suite 300",
+      "neighborhood": "Greenfield",
+      "city": "Los Angeles",
+      "state": "CA",
+      "zipCode": "90015",
+      "country": "USA"
+    },
+    "phone": "+1-555-987-6543",
+    "gender": 2,
+    "medicalCenterId": 1
+  },
+  "bloodType": "A-"
+}
+

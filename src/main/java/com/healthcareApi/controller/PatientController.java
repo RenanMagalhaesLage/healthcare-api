@@ -30,9 +30,9 @@ public class PatientController {
     public ResponseEntity<String> delete(@RequestParam Long patientId){
         return ResponseEntity.ok(patientService.delete(patientId));
     }
-//
-//    @PutMapping()
-//    public ResponseEntity<HealthProfessionalResponseDTO> update(@RequestBody HealthProfessionalRequestDTO dto){
-//        return ResponseEntity.ok(patientService.update(dto));
-//    }
+
+    @PutMapping()
+    public ResponseEntity<PatientResponseDTO> update(@RequestBody PatientRequestDTO dto){
+        return ResponseEntity.ok(patientService.update(dto));
+    }
 }
