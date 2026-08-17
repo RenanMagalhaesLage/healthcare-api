@@ -1,11 +1,29 @@
 services:
-  mysql:
-    image: mysql:8.0.36
-    container_name: container_mysql
+
+  postgres:
+    image: postgres:17.5
+    container_name: container_postgres
     environment:
-      - MYSQL_DATABASE=healthcare_api_db
-      - MYSQL_PASSWORD=secret
-      - MYSQL_ROOT_PASSWORD=verysecret
-      - MYSQL_USER=myuser
+      POSTGRES_DB: healthcare_api_db
+      POSTGRES_USER: renan
+      POSTGRES_PASSWORD: renan
     ports:
-      - '3307:3306'
+      - "5432:5432"
+    networks:
+      - local-network
+
+  pgadmin:
+    image: dpage/pgadmin4:9.5
+    container_name: container_pgadmin
+    depends_on:
+      - postgres
+    environment:
+      PGADMIN_DEFAULT_EMAIL: dba@renan.com
+      PGADMIN_DEFAULT_PASSWORD: renan
+    ports:
+      - "8083:80"
+    networks:
+      - local-network
+
+networks:
+  local-network:

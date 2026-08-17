@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name= "TB_PRESCRIPTIONS")
+@Table(name= "TB_PRESCRIPTION")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor

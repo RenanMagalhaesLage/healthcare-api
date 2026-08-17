@@ -10,7 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 
 @Entity
-@Table(name= "TB_PATIENTS")
+@Table(name= "TB_PATIENT")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor

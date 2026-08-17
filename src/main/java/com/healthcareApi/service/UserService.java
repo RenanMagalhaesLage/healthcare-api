@@ -29,10 +29,9 @@ public class UserService {
     private final MedicalCenterRepository medicalCenterRepository;
     private final AddressService addressService;
 
-    public UserResponseDTO create (UserRequestDTO dto){
+    public UserResponseDTO create(UserRequestDTO dto){
         UserEntity userEntity = convertDtoToEntity(dto);
         AddressResponseDTO addressResponseDTO = addressService.create(dto.address());
-
 
         userEntity.setMedicalCenter(medicalCenterRepository.findById(dto.medicalCenterId()).orElseThrow(() -> new EntityNotFoundException("Medical Center not found")));
         userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));

@@ -1,6 +1,5 @@
 package com.healthcareApi.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.healthcareApi.enums.ProfessionalTypeEnum;
@@ -11,11 +10,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
-@Table(name= "TB_HEALTH_PROFESSIONALS")
+@Table(name= "TB_HEALTH_PROFESSIONAL")
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor

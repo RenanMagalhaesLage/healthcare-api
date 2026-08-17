@@ -12,7 +12,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
-@Table(name= "TB_USERS")
+@Table(name= "TB_USER")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor

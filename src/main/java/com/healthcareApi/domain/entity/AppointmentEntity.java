@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name= "TB_APPOINTMENTS")
+@Table(name= "TB_APPOINTMENT")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
