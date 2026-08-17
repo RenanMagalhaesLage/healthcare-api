@@ -18,8 +18,5 @@ public interface PatientMapper {
 
     List<PatientResponseDTO> toResponse(List<PatientEntity> entity);
 
-    void updateEntity(
-            PatientRequestDTO dto,
-            @MappingTarget PatientEntity entity
-    );
+    void updateEntity(PatientRequestDTO dto, @MappingTarget PatientEntity entity);
 }

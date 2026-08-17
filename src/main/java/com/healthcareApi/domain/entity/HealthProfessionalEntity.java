@@ -39,6 +39,10 @@ public class HealthProfessionalEntity {
     @Column(name = "PROFESSIONAL_ID")
     private String professionalId; // ex: CRM, COREN, etc.
 
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "MEDICAL_CENTER_ID")
+//    private MedicalCenterEntity medicalCenterEntity;
+
     @CreationTimestamp
     private Instant creationTimestamp;
 
