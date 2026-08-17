@@ -21,7 +21,7 @@ Technologies Used:
 ## ✅ System Features
 
 - [x] Create, Read, Update, Delete for: Users, Patients, Health Professionals, Medical Centers, Appointments and Prescriptions 
-- [x] PDF generation for prescriptions
+- [ ] PDF generation for prescriptions
 
 ---
 
