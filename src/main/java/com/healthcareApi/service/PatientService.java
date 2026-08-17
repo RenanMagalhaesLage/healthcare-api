@@ -28,9 +28,12 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class PatientService {
     private final PatientRepository patientRepository;
-    private final UserService userService;
-    private final UserRepository userRepository;
     private final PatientMapper patientMapper;
+
+    public PatientResponseDTO findById(Long patientId){
+        PatientEntity patientEntity = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
+        return patientMapper.toResponse(patientEntity);
+    }
 
     public List<PatientResponseDTO> getAll(){
         List<PatientEntity> patientEntityList = patientRepository.findAll();
@@ -43,15 +46,15 @@ public class PatientService {
     }
 
     public PatientResponseDTO update(PatientRequestDTO dto){
-        PatientEntity patientEntity = patientRepository.findById(dto.patientId()).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        PatientEntity patientEntity = patientRepository.findById(dto.patientId()).orElseThrow(() -> new EntityNotFoundException("Patient with id " + dto.patientId() + " not found"));
         patientMapper.updateEntity(dto, patientEntity);
         return patientMapper.toResponse(patientRepository.save(patientEntity));
     }
 
     public String delete(Long patientId){
-        PatientEntity patientEntity = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
+        PatientEntity patientEntity = patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Patient with id " + patientId + " not found"));
         patientRepository.delete(patientEntity);
 
-        return "Patient deleted successfully.";
+        return "Patient with id " + patientId + " deleted successfully.";
     }
 }

@@ -5,6 +5,7 @@ import com.healthcareApi.domain.dto.response.PatientResponseDTO;
 import com.healthcareApi.service.PatientService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,14 +13,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
-@RequiredArgsConstructor
 @Tag(name = "Patients", description = "Endpoints for managing patients")
 public class PatientController {
-    private final PatientService patientService;
+    @Autowired
+    private PatientService patientService;
 
     @GetMapping()
     public ResponseEntity<List<PatientResponseDTO>> getAll(){
         return ResponseEntity.ok(patientService.getAll());
+    }
+
+    @GetMapping(params = "patientId")
+    public ResponseEntity<PatientResponseDTO> findById(@RequestParam Long patientId){
+        return ResponseEntity.ok(patientService.findById(patientId));
     }
 
     @PostMapping()
