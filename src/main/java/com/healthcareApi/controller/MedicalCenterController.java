@@ -19,13 +19,13 @@ import java.util.List;
 public class MedicalCenterController {
     private final MedicalCenterService medicalCenterService;
 
-    @PostMapping()
-    public ResponseEntity<MedicalCenterResponseDTO> create(@RequestBody MedicalCenterRequestDTO dto){
-        return ResponseEntity.ok(medicalCenterService.create(dto));
-    }
-
-    @GetMapping
-    public ResponseEntity<MedicalCenterResponseDTO> getById(@RequestParam Long medicalCenterId){
-        return ResponseEntity.ok(medicalCenterService.getById(medicalCenterId));
-    }
+//    @PostMapping()
+//    public ResponseEntity<MedicalCenterResponseDTO> create(@RequestBody MedicalCenterRequestDTO dto){
+//        return ResponseEntity.ok(medicalCenterService.create(dto));
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<MedicalCenterResponseDTO> getById(@RequestParam Long medicalCenterId){
+//        return ResponseEntity.ok(medicalCenterService.getById(medicalCenterId));
+//    }
 }

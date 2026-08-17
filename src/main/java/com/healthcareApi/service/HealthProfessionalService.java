@@ -27,75 +27,75 @@ public class HealthProfessionalService {
     private final UserRepository userRepository;
     private final MedicalCenterRepository medicalCenterRepository;
 
-    public HealthProfessionalResponseDTO create (HealthProfessionalRequestDTO dto){
-        HealthProfessionalEntity healthProfessionalEntity = convertDtoToEntity(dto);
-        UserResponseDTO userResponseDTO = userService.create(dto.user());
-
-        healthProfessionalEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
-        return convertEntityToDto(healthProfessionalRepository.save(healthProfessionalEntity));
-    }
-
-    public List<HealthProfessionalResponseDTO> getAll(Long medicalCenterId){
-        List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findAll().stream().filter(n -> Objects.equals(n.getUser().getMedicalCenter().getId(), medicalCenterId)).toList();
-        List<HealthProfessionalResponseDTO> healthProfessionalResponseDTOList = new ArrayList<>();
-        for (HealthProfessionalEntity entity : healthProfessionalEntityList) {
-            healthProfessionalResponseDTOList.add(convertEntityToDto(entity));
-        }
-        return healthProfessionalResponseDTOList;
-    }
-
-    public List<HealthProfessionalResponseDTO> findBySpecialty(Integer specialty, Long medicalCenterId){
-        SpecialtyEnum[] specialties = SpecialtyEnum.values();
-
-        if (specialty == null || specialty < 0 || specialty >= specialties.length) {
-            throw new IllegalArgumentException("Invalid specialty");
-        }
-
-        SpecialtyEnum selectedSpecialty = specialties[specialty];
-
-        List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findBySpecialty(selectedSpecialty);
-        healthProfessionalEntityList = healthProfessionalEntityList.stream().filter(n -> Objects.equals(n.getUser().getMedicalCenter().getId(), medicalCenterId)).toList();
-        List<HealthProfessionalResponseDTO> healthProfessionalResponseDTOList = new ArrayList<>();
-
-        for (HealthProfessionalEntity entity : healthProfessionalEntityList) {
-            healthProfessionalResponseDTOList.add(convertEntityToDto(entity));
-        }
-        return healthProfessionalResponseDTOList;
-    }
-
-    public String delete(Long healthProfessionalId){
-        HealthProfessionalEntity healthProfessionalEntity = healthProfessionalRepository.findById(healthProfessionalId).orElseThrow(() -> new EntityNotFoundException("Health Professional not found"));
-        healthProfessionalRepository.delete(healthProfessionalEntity);
-
-        return "Health Professional deleted successfully.";
-    }
-
-    public HealthProfessionalResponseDTO update(HealthProfessionalRequestDTO dto){
-        HealthProfessionalEntity healthProfessionalEntity = healthProfessionalRepository.findById(dto.healthProfessionalId()).orElseThrow(() -> new EntityNotFoundException("Health Professional not found"));
-        HealthProfessionalEntity newHealthProfessionalEntity = convertDtoToEntity(dto);
-        UserResponseDTO userResponseDTO = userService.update(dto.user());
-        newHealthProfessionalEntity.setId(dto.healthProfessionalId());
-        newHealthProfessionalEntity.setCreationTimestamp(healthProfessionalEntity.getCreationTimestamp());
-
-        newHealthProfessionalEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
-        return convertEntityToDto(healthProfessionalRepository.save(newHealthProfessionalEntity));
-    }
-
-    public HealthProfessionalEntity convertDtoToEntity(HealthProfessionalRequestDTO dto){
-        return HealthProfessionalEntity.builder()
-                .type(ProfessionalTypeEnum.values()[dto.type()])
-                .specialty(SpecialtyEnum.values()[dto.specialty()])
-                .professionalId(dto.professionalId())
-                .build();
-    }
-
-    public HealthProfessionalResponseDTO convertEntityToDto(HealthProfessionalEntity entity){
-        return HealthProfessionalResponseDTO.builder()
-                .id(entity.getId())
-                .user(userService.convertEntityToDto(entity.getUser()))
-                .type(entity.getType())
-                .specialty(entity.getSpecialty())
-                .professionalId(entity.getProfessionalId())
-                .build();
-    }
+//    public HealthProfessionalResponseDTO create (HealthProfessionalRequestDTO dto){
+//        HealthProfessionalEntity healthProfessionalEntity = convertDtoToEntity(dto);
+//        UserResponseDTO userResponseDTO = userService.create(dto.user());
+//
+//        healthProfessionalEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
+//        return convertEntityToDto(healthProfessionalRepository.save(healthProfessionalEntity));
+//    }
+//
+//    public List<HealthProfessionalResponseDTO> getAll(Long medicalCenterId){
+//        List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findAll().stream().filter(n -> Objects.equals(n.getUser().getMedicalCenter().getId(), medicalCenterId)).toList();
+//        List<HealthProfessionalResponseDTO> healthProfessionalResponseDTOList = new ArrayList<>();
+//        for (HealthProfessionalEntity entity : healthProfessionalEntityList) {
+//            healthProfessionalResponseDTOList.add(convertEntityToDto(entity));
+//        }
+//        return healthProfessionalResponseDTOList;
+//    }
+//
+//    public List<HealthProfessionalResponseDTO> findBySpecialty(Integer specialty, Long medicalCenterId){
+//        SpecialtyEnum[] specialties = SpecialtyEnum.values();
+//
+//        if (specialty == null || specialty < 0 || specialty >= specialties.length) {
+//            throw new IllegalArgumentException("Invalid specialty");
+//        }
+//
+//        SpecialtyEnum selectedSpecialty = specialties[specialty];
+//
+//        List<HealthProfessionalEntity> healthProfessionalEntityList = healthProfessionalRepository.findBySpecialty(selectedSpecialty);
+//        healthProfessionalEntityList = healthProfessionalEntityList.stream().filter(n -> Objects.equals(n.getUser().getMedicalCenter().getId(), medicalCenterId)).toList();
+//        List<HealthProfessionalResponseDTO> healthProfessionalResponseDTOList = new ArrayList<>();
+//
+//        for (HealthProfessionalEntity entity : healthProfessionalEntityList) {
+//            healthProfessionalResponseDTOList.add(convertEntityToDto(entity));
+//        }
+//        return healthProfessionalResponseDTOList;
+//    }
+//
+//    public String delete(Long healthProfessionalId){
+//        HealthProfessionalEntity healthProfessionalEntity = healthProfessionalRepository.findById(healthProfessionalId).orElseThrow(() -> new EntityNotFoundException("Health Professional not found"));
+//        healthProfessionalRepository.delete(healthProfessionalEntity);
+//
+//        return "Health Professional deleted successfully.";
+//    }
+//
+//    public HealthProfessionalResponseDTO update(HealthProfessionalRequestDTO dto){
+//        HealthProfessionalEntity healthProfessionalEntity = healthProfessionalRepository.findById(dto.healthProfessionalId()).orElseThrow(() -> new EntityNotFoundException("Health Professional not found"));
+//        HealthProfessionalEntity newHealthProfessionalEntity = convertDtoToEntity(dto);
+//        UserResponseDTO userResponseDTO = userService.update(dto.user());
+//        newHealthProfessionalEntity.setId(dto.healthProfessionalId());
+//        newHealthProfessionalEntity.setCreationTimestamp(healthProfessionalEntity.getCreationTimestamp());
+//
+//        newHealthProfessionalEntity.setUser(userRepository.findById(userResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("User not found")));
+//        return convertEntityToDto(healthProfessionalRepository.save(newHealthProfessionalEntity));
+//    }
+//
+//    public HealthProfessionalEntity convertDtoToEntity(HealthProfessionalRequestDTO dto){
+//        return HealthProfessionalEntity.builder()
+//                .type(ProfessionalTypeEnum.values()[dto.type()])
+//                .specialty(SpecialtyEnum.values()[dto.specialty()])
+//                .professionalId(dto.professionalId())
+//                .build();
+//    }
+//
+//    public HealthProfessionalResponseDTO convertEntityToDto(HealthProfessionalEntity entity){
+//        return HealthProfessionalResponseDTO.builder()
+//                .id(entity.getId())
+//                .user(userService.convertEntityToDto(entity.getUser()))
+//                .type(entity.getType())
+//                .specialty(entity.getSpecialty())
+//                .professionalId(entity.getProfessionalId())
+//                .build();
+//    }
 }

@@ -17,27 +17,27 @@ import java.util.List;
 public class HealthProfessionalController {
     private final HealthProfessionalService healthProfessionalService;
 
-    @PostMapping()
-    public ResponseEntity<HealthProfessionalResponseDTO> create(@RequestBody HealthProfessionalRequestDTO dto){
-        return ResponseEntity.ok(healthProfessionalService.create(dto));
-    }
-    @GetMapping("all")
-    public ResponseEntity<List<HealthProfessionalResponseDTO>> getAll(@RequestParam Long medicalCenterId){
-        return ResponseEntity.ok(healthProfessionalService.getAll(medicalCenterId));
-    }
-
-    @GetMapping("by-specialty")
-    public ResponseEntity<List<HealthProfessionalResponseDTO>> findBySpecialty(@RequestParam Integer specialty, @RequestParam Long medicalCenterId){
-        return ResponseEntity.ok(healthProfessionalService.findBySpecialty(specialty, medicalCenterId));
-    }
-
-    @DeleteMapping()
-    public ResponseEntity<String> delete(@RequestParam Long healthProfessionalId){
-        return ResponseEntity.ok(healthProfessionalService.delete(healthProfessionalId));
-    }
-
-    @PutMapping()
-    public ResponseEntity<HealthProfessionalResponseDTO> update(@RequestBody HealthProfessionalRequestDTO dto){
-        return ResponseEntity.ok(healthProfessionalService.update(dto));
-    }
+//    @PostMapping()
+//    public ResponseEntity<HealthProfessionalResponseDTO> create(@RequestBody HealthProfessionalRequestDTO dto){
+//        return ResponseEntity.ok(healthProfessionalService.create(dto));
+//    }
+//    @GetMapping("all")
+//    public ResponseEntity<List<HealthProfessionalResponseDTO>> getAll(@RequestParam Long medicalCenterId){
+//        return ResponseEntity.ok(healthProfessionalService.getAll(medicalCenterId));
+//    }
+//
+//    @GetMapping("by-specialty")
+//    public ResponseEntity<List<HealthProfessionalResponseDTO>> findBySpecialty(@RequestParam Integer specialty, @RequestParam Long medicalCenterId){
+//        return ResponseEntity.ok(healthProfessionalService.findBySpecialty(specialty, medicalCenterId));
+//    }
+//
+//    @DeleteMapping()
+//    public ResponseEntity<String> delete(@RequestParam Long healthProfessionalId){
+//        return ResponseEntity.ok(healthProfessionalService.delete(healthProfessionalId));
+//    }
+//
+//    @PutMapping()
+//    public ResponseEntity<HealthProfessionalResponseDTO> update(@RequestBody HealthProfessionalRequestDTO dto){
+//        return ResponseEntity.ok(healthProfessionalService.update(dto));
+//    }
 }

@@ -21,23 +21,23 @@ import java.util.List;
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
-    @PostMapping()
-    public ResponseEntity<AppointmentResponseDTO> create(@RequestBody AppointmentRequestDTO dto){
-        return ResponseEntity.ok(appointmentService.create(dto));
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<AppointmentResponseDTO>> getAll(@RequestParam Long medicalCenterId){
-        return ResponseEntity.ok(appointmentService.getAll(medicalCenterId));
-    }
-
-    @GetMapping("by-health-professional")
-    public ResponseEntity<List<AppointmentResponseDTO>> findByHealthProfessional(@RequestParam Long healthProfessionalId){
-        return ResponseEntity.ok(appointmentService.findByHealthProfessional(healthProfessionalId));
-    }
-
-    @GetMapping("by-patient")
-    public ResponseEntity<List<AppointmentResponseDTO>> findByPatient(@RequestParam Long patientId){
-        return ResponseEntity.ok(appointmentService.findByPatient(patientId));
-    }
+//    @PostMapping()
+//    public ResponseEntity<AppointmentResponseDTO> create(@RequestBody AppointmentRequestDTO dto){
+//        return ResponseEntity.ok(appointmentService.create(dto));
+//    }
+//
+//    @GetMapping()
+//    public ResponseEntity<List<AppointmentResponseDTO>> getAll(@RequestParam Long medicalCenterId){
+//        return ResponseEntity.ok(appointmentService.getAll(medicalCenterId));
+//    }
+//
+//    @GetMapping("by-health-professional")
+//    public ResponseEntity<List<AppointmentResponseDTO>> findByHealthProfessional(@RequestParam Long healthProfessionalId){
+//        return ResponseEntity.ok(appointmentService.findByHealthProfessional(healthProfessionalId));
+//    }
+//
+//    @GetMapping("by-patient")
+//    public ResponseEntity<List<AppointmentResponseDTO>> findByPatient(@RequestParam Long patientId){
+//        return ResponseEntity.ok(appointmentService.findByPatient(patientId));
+//    }
 }

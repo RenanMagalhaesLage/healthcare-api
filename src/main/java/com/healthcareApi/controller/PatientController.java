@@ -17,22 +17,23 @@ import java.util.List;
 public class PatientController {
     private final PatientService patientService;
 
+    @GetMapping()
+    public ResponseEntity<List<PatientResponseDTO>> getAll(){
+        return ResponseEntity.ok(patientService.getAll());
+    }
+
     @PostMapping()
     public ResponseEntity<PatientResponseDTO> create(@RequestBody PatientRequestDTO dto){
         return ResponseEntity.ok(patientService.create(dto));
-    }
-    @GetMapping("all")
-    public ResponseEntity<List<PatientResponseDTO>> getAll(@RequestParam Long medicalCenterId){
-        return ResponseEntity.ok(patientService.getAll(medicalCenterId));
-    }
-
-    @DeleteMapping()
-    public ResponseEntity<String> delete(@RequestParam Long patientId){
-        return ResponseEntity.ok(patientService.delete(patientId));
     }
 
     @PutMapping()
     public ResponseEntity<PatientResponseDTO> update(@RequestBody PatientRequestDTO dto){
         return ResponseEntity.ok(patientService.update(dto));
+    }
+
+    @DeleteMapping()
+    public ResponseEntity<String> delete(@RequestParam Long patientId){
+        return ResponseEntity.ok(patientService.delete(patientId));
     }
 }

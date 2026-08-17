@@ -30,33 +30,33 @@ public class MedicalCenterService {
     private final AddressRepository addressRepository;
     private final AddressService addressService;
 
-    public MedicalCenterResponseDTO create(MedicalCenterRequestDTO dto) {
-        MedicalCenterEntity medicalCenterEntity = convertDtoToEntity(dto);
-        AddressResponseDTO addressResponseDTO = addressService.create(dto.address());
-
-        medicalCenterEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
-        return convertEntityToDto(medicalCenterRepository.save(medicalCenterEntity));
-    }
-
-    public MedicalCenterResponseDTO getById(Long medicalCenterId) {
-        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId) .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
-        return convertEntityToDto(medicalCenterEntity);
-    }
-
-    public MedicalCenterEntity convertDtoToEntity(MedicalCenterRequestDTO dto){
-        return MedicalCenterEntity.builder()
-                .name(dto.name())
-                .phone(dto.phone())
-                .build();
-    }
-
-    public MedicalCenterResponseDTO convertEntityToDto(MedicalCenterEntity entity){
-        return MedicalCenterResponseDTO.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .phone(entity.getPhone())
-                .address(addressService.convertEntityToDto(entity.getAddress()))
-                .build();
-    }
+//    public MedicalCenterResponseDTO create(MedicalCenterRequestDTO dto) {
+//        MedicalCenterEntity medicalCenterEntity = convertDtoToEntity(dto);
+//        AddressResponseDTO addressResponseDTO = addressService.create(dto.address());
+//
+//        medicalCenterEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
+//        return convertEntityToDto(medicalCenterRepository.save(medicalCenterEntity));
+//    }
+//
+//    public MedicalCenterResponseDTO getById(Long medicalCenterId) {
+//        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId) .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
+//        return convertEntityToDto(medicalCenterEntity);
+//    }
+//
+//    public MedicalCenterEntity convertDtoToEntity(MedicalCenterRequestDTO dto){
+//        return MedicalCenterEntity.builder()
+//                .name(dto.name())
+//                .phone(dto.phone())
+//                .build();
+//    }
+//
+//    public MedicalCenterResponseDTO convertEntityToDto(MedicalCenterEntity entity){
+//        return MedicalCenterResponseDTO.builder()
+//                .id(entity.getId())
+//                .name(entity.getName())
+//                .phone(entity.getPhone())
+//                .address(addressService.convertEntityToDto(entity.getAddress()))
+//                .build();
+//    }
 
 }
