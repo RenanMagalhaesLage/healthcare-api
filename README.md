@@ -14,14 +14,14 @@
 Technologies Used:
 
 - **Backend**: Spring Boot (Java)
-- **Database**: MySQL running in a Docker container
+- **Database**: PostgreSQL running in a Docker container
 
 ---
 
 ## ✅ System Features
 
 - [x] Create, Read, Update, Delete for: Users, Patients, Health Professionals, Medical Centers, Appointments and Prescriptions 
-- [x] PDF generation for prescriptions
+- [] PDF generation for prescriptions
 
 ---
 
