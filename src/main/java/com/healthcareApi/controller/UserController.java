@@ -5,7 +5,6 @@ import com.healthcareApi.domain.dto.response.UserResponseDTO;
 import com.healthcareApi.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserResponseDTO>> getAll(@RequestParam Long medicalCenterId){
-        return ResponseEntity.ok(userService.findAll(medicalCenterId));
+    public ResponseEntity<List<UserResponseDTO>> getAll(){
+        return ResponseEntity.ok(userService.findAll());
     }
 }

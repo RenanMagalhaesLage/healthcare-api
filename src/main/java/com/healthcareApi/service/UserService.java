@@ -1,15 +1,9 @@
 package com.healthcareApi.service;
 
-import com.healthcareApi.domain.dto.request.HealthProfessionalRequestDTO;
 import com.healthcareApi.domain.dto.request.UserRequestDTO;
-import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.UserResponseDTO;
-import com.healthcareApi.domain.entity.HealthProfessionalEntity;
-import com.healthcareApi.domain.entity.MedicalCenterEntity;
 import com.healthcareApi.domain.entity.UserEntity;
-import com.healthcareApi.enums.GenderEnum;
-import com.healthcareApi.repository.AddressRepository;
-import com.healthcareApi.repository.MedicalCenterRepository;
+import com.healthcareApi.domain.mapper.UserMapper;
 import com.healthcareApi.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -17,72 +11,30 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
-    private final AddressRepository addressRepository;
-    private final MedicalCenterRepository medicalCenterRepository;
-    private final AddressService addressService;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private UserMapper userMapper;
 
     public UserResponseDTO create(UserRequestDTO dto){
-        UserEntity userEntity = convertDtoToEntity(dto);
-        AddressResponseDTO addressResponseDTO = addressService.create(dto.address());
-
-        userEntity.setMedicalCenter(medicalCenterRepository.findById(dto.medicalCenterId()).orElseThrow(() -> new EntityNotFoundException("Medical Center not found")));
-        userEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
-        return convertEntityToDto(userRepository.save(userEntity));
+        UserEntity userEntity = userMapper.toEntity(dto);
+        return userMapper.toResponse(userRepository.save(userEntity));
     }
 
     public UserResponseDTO update(UserRequestDTO dto){
         UserEntity userEntity = userRepository.findById(dto.userId()).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        UserEntity newUserEntity = convertDtoToEntity(dto);
-        AddressResponseDTO addressResponseDTO = addressService.update(dto.address());
-        newUserEntity.setId(dto.userId());
-        newUserEntity.setCreationTimestamp(userEntity.getCreationTimestamp());
+        userMapper.updateEntity(dto, userEntity);
 
-        newUserEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
-        newUserEntity.setMedicalCenter(userEntity.getMedicalCenter());
-        return convertEntityToDto(userRepository.save(newUserEntity));
+        return userMapper.toResponse(userRepository.save(userEntity));
     }
 
-    public List<UserResponseDTO> findAll(Long medicalCenterId){
-        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId).orElseThrow(() -> new EntityNotFoundException("Medical Center not found"));
-        List<UserEntity> userEntityList = userRepository.findByMedicalCenter(medicalCenterEntity);
-        List<UserResponseDTO> userResponseDTOs = new ArrayList<>();
-        for (UserEntity userEntity : userEntityList) {
-            userResponseDTOs.add(convertEntityToDto(userEntity));
-        }
-        return userResponseDTOs;
+    public List<UserResponseDTO> findAll(){
+        List<UserEntity> userEntityList = userRepository.findAll();
+        return userMapper.toResponse(userEntityList);
     }
-
-    public UserEntity convertDtoToEntity(UserRequestDTO dto){
-        return UserEntity.builder()
-                .name(dto.name())
-                .lastname(dto.lastname())
-                .email(dto.email())
-                .birthday(dto.birthday())
-                .phone(dto.phone())
-                .gender(GenderEnum.values()[dto.gender()])
-                .build();
-    }
-
-    public UserResponseDTO convertEntityToDto(UserEntity entity){
-        return UserResponseDTO.builder()
-                .id(entity.getId())
-                .name(entity.getName())
-                .lastname(entity.getLastname())
-                .email(entity.getEmail())
-                .birthday(entity.getBirthday())
-                .phone(entity.getPhone())
-                .gender(entity.getGender())
-                .address(addressService.convertEntityToDto(entity.getAddress()))
-                .build();
-    }
-
-
 }
