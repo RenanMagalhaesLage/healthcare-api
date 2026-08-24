@@ -19,5 +19,5 @@ public class HealthProfessionalResponseDTO {
     private UserResponseDTO user;
     private ProfessionalTypeEnum type;
     private SpecialtyEnum specialty;
-    private String professionalId;
+    private String professionalRegistration;
 }

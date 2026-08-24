@@ -26,8 +26,8 @@ public class HealthProfessionalEntity {
     @Column(name = "HEALTH_PROFESSIONAL_ID")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "USER_ID")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "USER_ID", nullable = false)
     private UserEntity user;
 
     @Enumerated(EnumType.STRING)
@@ -36,8 +36,8 @@ public class HealthProfessionalEntity {
     @Enumerated(EnumType.STRING)
     private SpecialtyEnum specialty;
 
-    @Column(name = "PROFESSIONAL_ID")
-    private String professionalId; // ex: CRM, COREN, etc.
+    @Column(name = "PROFESSIONAL_REGISTRATION0", nullable = false)
+    private String professionalRegistration; // ex: CRM, COREN, etc.
 
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "MEDICAL_CENTER_ID")
