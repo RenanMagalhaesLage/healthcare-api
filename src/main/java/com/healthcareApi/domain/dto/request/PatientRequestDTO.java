@@ -1,4 +1,6 @@
 package com.healthcareApi.domain.dto.request;
 
-public record PatientRequestDTO(UserRequestDTO user, Long patientId, String bloodType) {
+import java.math.BigDecimal;
+
+public record PatientRequestDTO(UserRequestDTO user, Long patientId, String bloodType, BigDecimal height, BigDecimal weight) {
 }
