@@ -33,7 +33,7 @@ public class MedicalCenterService {
 
     public MedicalCenterResponseDTO create(MedicalCenterRequestDTO dto) {
         MedicalCenterEntity medicalCenterEntity = medicalCenterMapper.toEntity(dto);
-        return medicalCenterMapper.toResponse(medicalCenterEntity);
+        return medicalCenterMapper.toResponse(medicalCenterRepository.save(medicalCenterEntity));
     }
 
     public MedicalCenterResponseDTO update(MedicalCenterRequestDTO dto){
