@@ -35,7 +35,7 @@ public class PatientService {
         return patientMapper.toResponse(patientEntity);
     }
 
-    public List<PatientResponseDTO> getAll(){
+    public List<PatientResponseDTO> findAll(){
         List<PatientEntity> patientEntityList = patientRepository.findAll();
         return patientMapper.toResponse(patientEntityList);
     }

@@ -24,7 +24,7 @@ public class AppointmentAvailabilityEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "HEALTH_PROFESSIONAL_ID", nullable = false)
-    private HealthProfessionalEntity professional;
+    private HealthProfessionalEntity healthProfessional;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "DAY_OF_WEEK", nullable = false)
@@ -35,4 +35,8 @@ public class AppointmentAvailabilityEntity {
 
     @Column(name = "END_TIME", nullable = false)
     private LocalTime endTime;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "MEDICAL_CENTER_ID", nullable = false)
+    private MedicalCenterEntity medicalCenter;
 }

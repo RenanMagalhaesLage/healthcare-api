@@ -3,8 +3,12 @@ package com.healthcareApi.service;
 import com.healthcareApi.domain.dto.request.AppointmentAvailabilityRequestDTO;
 import com.healthcareApi.domain.dto.response.AppointmentAvailabilityResponseDTO;
 import com.healthcareApi.domain.entity.AppointmentAvailabilityEntity;
+import com.healthcareApi.domain.entity.HealthProfessionalEntity;
+import com.healthcareApi.domain.entity.MedicalCenterEntity;
 import com.healthcareApi.domain.mapper.AppointmentAvailabilityMapper;
 import com.healthcareApi.repository.AppointmentAvailabilityRepository;
+import com.healthcareApi.repository.HealthProfessionalRepository;
+import com.healthcareApi.repository.MedicalCenterRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,10 @@ import java.util.List;
 public class AppointmentAvailabilityService {
     @Autowired
     private AppointmentAvailabilityRepository appointmentAvailabilityRepository;
+    @Autowired
+    private HealthProfessionalRepository healthProfessionalRepository;
+    @Autowired
+    private MedicalCenterRepository medicalCenterRepository;
     @Autowired
     private AppointmentAvailabilityMapper appointmentAvailabilityMapper;
 
@@ -32,6 +40,18 @@ public class AppointmentAvailabilityService {
 
     public AppointmentAvailabilityResponseDTO create(AppointmentAvailabilityRequestDTO dto){
         AppointmentAvailabilityEntity appointmentAvailabilityEntity = appointmentAvailabilityMapper.toEntity(dto);
+
+        HealthProfessionalEntity professional =
+                healthProfessionalRepository.findById(dto.healthProfessionalId())
+                        .orElseThrow(() -> new EntityNotFoundException("Health Professional with id " + dto.healthProfessionalId() + " not found"));
+
+        MedicalCenterEntity medicalCenter =
+                medicalCenterRepository.findById(dto.medicalCenterId())
+                        .orElseThrow(() -> new EntityNotFoundException("Medical Center with id " + dto.medicalCenterId() + " not found"));
+
+
+        appointmentAvailabilityEntity.setHealthProfessional(professional);
+        appointmentAvailabilityEntity.setMedicalCenter(medicalCenter);
         return appointmentAvailabilityMapper.toResponse(appointmentAvailabilityRepository.save(appointmentAvailabilityEntity));
     }
 

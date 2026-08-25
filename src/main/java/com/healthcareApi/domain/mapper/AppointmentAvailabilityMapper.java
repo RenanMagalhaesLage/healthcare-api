@@ -15,6 +15,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface AppointmentAvailabilityMapper {
     @Mapping(source = "appointmentAvailabilityId", target = "id")
+    @Mapping(target = "healthProfessional", ignore = true)
+    @Mapping(target = "medicalCenter", ignore = true)
     AppointmentAvailabilityEntity toEntity(AppointmentAvailabilityRequestDTO dto);
 
     AppointmentAvailabilityResponseDTO toResponse(AppointmentAvailabilityEntity entity);
