@@ -1,62 +1,54 @@
 package com.healthcareApi.service;
 
-import com.healthcareApi.domain.dto.request.HealthProfessionalMedicalCenterRequestDTO;
 import com.healthcareApi.domain.dto.request.MedicalCenterRequestDTO;
-import com.healthcareApi.domain.dto.response.AddressResponseDTO;
 import com.healthcareApi.domain.dto.response.MedicalCenterResponseDTO;
-import com.healthcareApi.domain.entity.HealthProfessionalEntity;
 import com.healthcareApi.domain.entity.MedicalCenterEntity;
-import com.healthcareApi.repository.AddressRepository;
-import com.healthcareApi.repository.HealthProfessionalRepository;
+import com.healthcareApi.domain.mapper.MedicalCenterMapper;
 import com.healthcareApi.repository.MedicalCenterRepository;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class MedicalCenterService {
-    private final MedicalCenterRepository medicalCenterRepository;
-    private final HealthProfessionalRepository healthProfessionalRepository;
-    private final AddressRepository addressRepository;
-    private final AddressService addressService;
+    @Autowired
+    private MedicalCenterRepository medicalCenterRepository;
 
-//    public MedicalCenterResponseDTO create(MedicalCenterRequestDTO dto) {
-//        MedicalCenterEntity medicalCenterEntity = convertDtoToEntity(dto);
-//        AddressResponseDTO addressResponseDTO = addressService.create(dto.address());
-//
-//        medicalCenterEntity.setAddress(addressRepository.findById(addressResponseDTO.getId()).orElseThrow(() -> new EntityNotFoundException("Address not found")));
-//        return convertEntityToDto(medicalCenterRepository.save(medicalCenterEntity));
-//    }
-//
-//    public MedicalCenterResponseDTO getById(Long medicalCenterId) {
-//        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId) .orElseThrow(() -> new EntityNotFoundException("Medical center not found"));
-//        return convertEntityToDto(medicalCenterEntity);
-//    }
-//
-//    public MedicalCenterEntity convertDtoToEntity(MedicalCenterRequestDTO dto){
-//        return MedicalCenterEntity.builder()
-//                .name(dto.name())
-//                .phone(dto.phone())
-//                .build();
-//    }
-//
-//    public MedicalCenterResponseDTO convertEntityToDto(MedicalCenterEntity entity){
-//        return MedicalCenterResponseDTO.builder()
-//                .id(entity.getId())
-//                .name(entity.getName())
-//                .phone(entity.getPhone())
-//                .address(addressService.convertEntityToDto(entity.getAddress()))
-//                .build();
-//    }
+    @Autowired
+    private MedicalCenterMapper medicalCenterMapper;
+
+    public MedicalCenterResponseDTO findById(Long medicalCenterId) {
+        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId) .orElseThrow(() -> new EntityNotFoundException("Medical Center with id " + medicalCenterId + " not found"));
+        return medicalCenterMapper.toResponse(medicalCenterEntity);
+    }
+
+    public List<MedicalCenterResponseDTO> findAll(){
+        List<MedicalCenterEntity> medicalCenterEntityList = medicalCenterRepository.findAll();
+        return medicalCenterMapper.toResponse(medicalCenterEntityList);
+    }
+
+    public MedicalCenterResponseDTO create(MedicalCenterRequestDTO dto) {
+        MedicalCenterEntity medicalCenterEntity = medicalCenterMapper.toEntity(dto);
+        return medicalCenterMapper.toResponse(medicalCenterEntity);
+    }
+
+    public MedicalCenterResponseDTO update(MedicalCenterRequestDTO dto){
+        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(dto.medicalCenterId()) .orElseThrow(() -> new EntityNotFoundException("Medical Center with id " + dto.medicalCenterId() + " not found"));
+        medicalCenterMapper.updateEntity(dto, medicalCenterEntity);
+        return medicalCenterMapper.toResponse(medicalCenterEntity);
+    }
+
+    public String delete(Long medicalCenterId){
+        MedicalCenterEntity medicalCenterEntity = medicalCenterRepository.findById(medicalCenterId) .orElseThrow(() -> new EntityNotFoundException("Medical Center with id " + medicalCenterId + " not found"));
+        medicalCenterRepository.delete(medicalCenterEntity);
+        return "Medical Center with id " + medicalCenterId + " deleted successfully.";
+    }
+
+
+
 
 }
